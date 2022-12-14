@@ -4,36 +4,42 @@
     <title>Scrabble</title>
     <meta charset="utf-8">
     <link href="css/style.css" rel="stylesheet">
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script/jquery-ui-1.13.2/jquery-ui.js"></script>
+    <script src="script/draggable.js"></script>
+    
 </head>
 <body>
-    <h1>Scrabble</h1>
+    <h1>A Bit of Scrabble</h1>
 
     <div id="board">
-        <img src="graphics_data/Scrabble_Board_OneLine.png" />
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_DoubleWord.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_DoubleLetter.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_DoubleLetter.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_DoubleWord.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
+        <img src="graphics_data/Scrabble_Board_Tile.png" class="boardSlot"/>
     </div>
 
     <br><br>
 
-    <p id="word">
-        Word: 
-    </p>
+    <p id="word">Word:</p>
+    <p id="score">Score:</p>
+    <p id="highestScore">Highest Score:</p>
 
-    <p id="score">
-        Score: 
-    </p>
-
-    <p id="highestScore">
-        Highest Score:
-    </p>
-
-    <button id="nextWord">
-        Next Word
-    </button>
-
-    <button id="reset">
-        Reset
-    </button>
+    <button id="nextWord">Next Word</button>
+    <button id="reset">Reset</button>
 
     <div id="tile-holder">
         <img src="graphics_data/scrabble-tile-holder-406774_640.png" />
