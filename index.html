@@ -3,13 +3,10 @@
 <head>
     <title>Scrabble</title>
     <meta charset="utf-8">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="script/jquery-ui-1.13.2/jquery-ui.js"></script>
-    <script src="script/draggable.js"></script>
-    
 </head>
 <body>
     <h1>A Bit of Scrabble</h1>
@@ -18,24 +15,31 @@
         <!--Board container, JS file places divs for tiles-->
     </div>
 
-    <br><br>
-
-    <p id="word">Word:</p>
-    <p id="score">Score:</p>
-    <p id="highestScore">Highest Score:</p>
-
-    <button id="nextWord">Next Word</button>
-    <button id="reset">Reset</button>
-
-    <div id="tile-holder">
-        <img src="graphics_data/scrabble-tile-holder-406774_640.png" />
-    </div>
-
-    <div id="tiles">
-
+    <div id="gameButtons">
+        <button id="nextWord" class="button">Next Word</button>
+        <button id="reset" class="button">Reset</button>
     </div>
     
-    <script type="text/javascript" src="script/pieces.json"></script>
-    <script type="module" src="script/scrabble.js"></script>
+    <br><br>
+
+    <div id="data">
+        <p id="word">Word:</p>
+        <p id="score">Score:</p>
+        <p id="highestScore">Highest Score:</p>
+    </div>
+
+    <img src="./graphics_data/scrabble_tiles/Scrabble_Tile_K.jpg" class="tile-image ui-draggable ui-draggable-handle" letter="K" style="position: relative;">
+    <div id="tile-holder" class="ui-droppable">
+        <!--Container for all tiles and tile holder-->
+    </div>
 </body>
+
+<!-- <script src="script/jquery-ui-1.13.2/jquery-ui.js"></script> -->
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script type="text/javascript" src="script/pieces.json"></script>
+<script type="module" src="script/scrabble.js"></script>
+<script src="script/draggable.js"></script>
+
 </html>
