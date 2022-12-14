@@ -2,14 +2,20 @@ import scrabbleJSON from './pieces.json' assert {type: 'json'};
 
 // must add blank tile later
 const tileKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var graphicsFolder = "./graphics_data/"
 var tileFolder = "./graphics_data/scrabble_tiles/";
 
 var currentTiles = [];
+var boardArray = [];
+
 var rackSize = 7;
+var boardSize = 14;
 
 window.addEventListener("load", (event) => {
     console.log("page has loaded");
     console.log(scrabbleJSON.pieces);
+
+    generateBoard();
     generateRack();
 });
 
@@ -22,6 +28,25 @@ window.addEventListener("load", (event) => {
 // resetButton.addEventListener("click", (event) => {
 //     generateRack();
 // });
+
+function generateBoard() {
+    var boardElement = document.getElementById("board");
+    var i;
+
+    for (i = 0; i < boardSize; i++) {
+        boardArray.push("Tile");
+    }
+
+    boardArray[2] = boardArray[12] = "DoubleWord";
+    boardArray[6] = boardArray[8] = "DoubleLetter";
+
+    for (i = 0; i < boardSize; i++) {
+
+        var tileAttribute = '<div class="boardSlot" row=0 col=' + i + ' style="background-image: url(\'../graphics_data/Scrabble_Board_' + boardArray[i] + '.png\');"></div>'
+        boardElement.innerHTML += tileAttribute;
+        
+    }
+}
 
 function generateRack() {
     // make array of tiles.
