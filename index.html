@@ -11,24 +11,29 @@
 <body>
     <h1>A Bit of Scrabble</h1>
 
-    <div id="board">
-        <!--Board container, JS file places divs for tiles-->
-    </div>
-
-    <div id="gameButtons">
-        <button id="nextWord" class="button">Next Word</button>
-        <button id="reset" class="button">Reset</button>
-    </div>
-    
-    <br><br>
-
     <div id="data">
         <p id="word">Word:</p>
         <p id="score">Score:</p>
         <p id="highestScore">Highest Score:</p>
     </div>
 
-    <img src="./graphics_data/scrabble_tiles/Scrabble_Tile_K.jpg" class="tile-image ui-draggable ui-draggable-handle" letter="K" style="position: relative;">
+    <br><br>
+
+    <div id="board">
+        <!--Board container, JS file places divs for tiles-->
+    </div>
+
+    <div id="gameButtons">
+        <button id="nextWord" class="button">Next Word</button>
+        <button id="getNewLetter" class="button">Get New Letter</button>
+        <button id="reset" class="button">Reset</button>
+    </div>
+    <br>
+    <div id="error">
+        <!--Container for error messages-->
+    </div>
+
+    <!-- <img src="./graphics_data/scrabble_tiles/Scrabble_Tile_K.jpg" class="tile-image ui-draggable ui-draggable-handle" letter="K" style="position: relative;"> -->
     <div id="tile-holder" class="ui-droppable">
         <!--Container for all tiles and tile holder-->
     </div>
@@ -40,6 +45,5 @@
 
 <script type="text/javascript" src="script/pieces.json"></script>
 <script type="module" src="script/scrabble.js"></script>
-<script src="script/draggable.js"></script>
 
 </html>

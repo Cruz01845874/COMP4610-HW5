@@ -12,7 +12,7 @@ var rackSize = 7;
 var boardSize = 14;
 var totalTiles = 0;
 
-window.addEventListener("load", (event) => {
+$(document).ready(function() {
     console.log("page has loaded");
     console.log(scrabbleJSON.pieces);
 
@@ -25,22 +25,18 @@ window.addEventListener("load", (event) => {
     }
 
     console.log(totalTiles);
-});
+})
 
-// const nextWordButton = document.getElementById("nextWord");
-// nextWordButton.addEventListener("click", (event) => {
-//     generateRack();
-// });
+const resetButton = $("#reset");
 
-const resetButton = document.getElementById("reset");
-resetButton.addEventListener("click", (event) => {
+resetButton.click(function() {
     tileKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-    document.getElementById("tile-holder").innerHTML = "";
+    $("tile-holder").html("");
     generateRack();
-});
+})
 
 function generateBoard() {
-    var boardElement = document.getElementById("board");
+    var boardElement = $("#board");
     var i;
 
     for (i = 0; i < boardSize; i++) {
@@ -51,16 +47,22 @@ function generateBoard() {
     boardArray[6] = boardArray[8] = "DoubleLetter";
 
     for (i = 0; i < boardSize; i++) {
+        var tileAttribute = '<div class="boardSlot" id="slot' + i + '" style="background-image: url(\'../graphics_data/Scrabble_Board_' + boardArray[i] + '.png\');"></div>'
+        boardElement.append(tileAttribute);
 
-        var tileAttribute = '<div class="boardSlot ui-droppable" row=0 col=' + i + ' style="background-image: url(\'../graphics_data/Scrabble_Board_' + boardArray[i] + '.png\');"></div>'
-        boardElement.innerHTML += tileAttribute;
+        $("#slot" + i).droppable({
+            drop: function(event, ui) {
+                $(this).addClass("ui-state-highlight")
+                
+            }
+        });
     }
 }
 
 function generateRack() {
 
     for (let i = 0; i < rackSize; i++) {
-        var index = Math.floor(Math.random() * tileKeys.length - 1) + 1;
+        var index = Math.floor(Math.random() * tileKeys.length);
         var randomLetter = tileKeys[index];
         var letterAmount = scrabbleJSON.pieces[index].amount;
         var letterAttribute;
@@ -78,9 +80,12 @@ function generateRack() {
         }
 
         let filePath = tileFolder + "Scrabble_Tile_" + letterAttribute + ".jpg";
-        let imgAttribute = '<img src="' + filePath + '" class="tile-image ui-draggable ui-draggable-handle" letter="' + letterAttribute + '" style="position: relative;">';
+        let imgAttribute = '<img id="tile' + i + '" src="' + filePath + '" class="tile-image tile-on-rack ui-draggable ui-draggable-handle" letter="' + letterAttribute + '" style="position: relative;">';
 
-        document.getElementById("tile-holder").innerHTML += imgAttribute;
+        $("#tile-holder").append(imgAttribute);
+        $("#tile" + i).draggable({
+            revert: 'invalid'
+        });
 
         if (letterAmount == 0) {
             tileKeys = tileKeys.replace(randomLetter, '');

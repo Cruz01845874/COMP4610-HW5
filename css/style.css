@@ -15,6 +15,7 @@ p {
 #gameButtons {
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .button {
@@ -41,7 +42,7 @@ p {
     border: 2.5px solid black;
     border-radius: 4px;
     background-color: whitesmoke;
-    width: 50%;
+    width: 30%;
     margin: auto;
 }
 
@@ -51,8 +52,11 @@ p {
     border-radius: 4px;
     display: inline;
     position: relative;
-    margin: 27px 5px 0px 5px;
     padding-top: 5em;
+}
+
+.tile-on-rack {
+    margin: 27px 5px 0px 5px;
 }
 
 #tile-holder {
