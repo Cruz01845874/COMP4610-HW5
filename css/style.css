@@ -55,6 +55,37 @@ p {
     padding-top: 5em;
 }
 
+.tile-hover {
+    border: 2px solid blue;
+}
+
+/* .draggable {
+    padding: 5px;
+    margin: 2px;
+    border: 1px solid black;
+    text-align: center;
+    background-color: #D0D0D0;
+    z-index: 999;
+  } */
+
+.droppable {
+    padding: 5px;
+    margin: 2px;
+    border: 1px solid black;
+    text-align: center;
+    background-color: white;
+    position: relative;
+}
+
+.ui-state-active {
+    border: 1px solid green;
+}
+
+.ui-draggable-dragging {
+    border: 1px solid blue;
+    margin: -10px;
+}
+
 .tile-on-rack {
     margin: 27px 5px 0px 5px;
 }

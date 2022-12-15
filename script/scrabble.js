@@ -1,12 +1,16 @@
 import scrabbleJSON from './pieces.json' assert {type: 'json'};
 
-// must add blank tile later
+const constantTileKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var tileKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
 var graphicsFolder = "./graphics_data/"
 var tileFolder = "./graphics_data/scrabble_tiles/";
 
 var currentTiles = [];
 var boardArray = [];
+var currentWord = [];
+
+var currentScore = 0;
+var highestScore = 0;
 
 var rackSize = 7;
 var boardSize = 14;
@@ -18,6 +22,9 @@ $(document).ready(function() {
 
     generateBoard();
     generateRack();
+
+    $("#score").append(currentScore);
+    $("#highestScore").append(highestScore);
 
     for (var i = 0; i < scrabbleJSON.pieces.length; i++) {
         let amount = scrabbleJSON.pieces[i]["amount"];
@@ -31,7 +38,7 @@ const resetButton = $("#reset");
 
 resetButton.click(function() {
     tileKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-    $("tile-holder").html("");
+    $("#tile-holder").html("");
     generateRack();
 })
 
@@ -51,9 +58,23 @@ function generateBoard() {
         boardElement.append(tileAttribute);
 
         $("#slot" + i).droppable({
+            classes: {"ui-droppable-active": "ui-state-default"},
+            hoverClass: "ui-state-active",
             drop: function(event, ui) {
-                $(this).addClass("ui-state-highlight")
-                
+                $(this).append(ui.draggable);
+
+                $(this).find(".draggable").css({
+                position: "relative",
+                top: 0,
+                left: 0,
+                margin: "-1px",
+                width: $(this).width() + "px"
+                });
+
+                $(event.target).droppable("disable");
+
+                let dragLetter = $(this).find(".draggable").attr("letter");
+                parseWord(dragLetter);
             }
         });
     }
@@ -67,8 +88,8 @@ function generateRack() {
         var letterAmount = scrabbleJSON.pieces[index].amount;
         var letterAttribute;
         
-        console.log(randomLetter);
-        console.log(--letterAmount);
+        // console.log(randomLetter);
+        // console.log(--letterAmount);
         currentTiles.push(scrabbleJSON.pieces[randomLetter]);
 
         if (randomLetter == '_') {
@@ -80,16 +101,43 @@ function generateRack() {
         }
 
         let filePath = tileFolder + "Scrabble_Tile_" + letterAttribute + ".jpg";
-        let imgAttribute = '<img id="tile' + i + '" src="' + filePath + '" class="tile-image tile-on-rack ui-draggable ui-draggable-handle" letter="' + letterAttribute + '" style="position: relative;">';
+        let imgAttribute = '<img id="tile' + i + '" src="' + filePath + '" class="tile-image tile-on-rack draggable ui-draggable ui-draggable-handle" letter="' + letterAttribute + '" style="position: relative;">';
 
         $("#tile-holder").append(imgAttribute);
         $("#tile" + i).draggable({
-            revert: 'invalid'
+            revert: 'invalid',
+            zIndex: 1000,
+            revertDuration: 400,
         });
 
         if (letterAmount == 0) {
             tileKeys = tileKeys.replace(randomLetter, '');
-            console.log(tileKeys);
+            // console.log(tileKeys);
         }
     }
+}
+
+function parseWord(letterArg) {
+
+    if (letterArg != null) {
+        var index = constantTileKeys.indexOf(letterArg);
+
+        var letterValue = scrabbleJSON.pieces[index].value;
+        console.log(letterValue);
+
+        var word = $("#word");
+
+        word.append(letterArg);
+        currentWord.push(letterArg);
+    }
+
+    else {
+        currentWord.push('*');
+    }
+    
+    calculateScore();
+}
+
+function calculateScore() {
+
 }
