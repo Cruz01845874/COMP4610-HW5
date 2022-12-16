@@ -9,6 +9,7 @@ h1 {
 }
 
 #gameButtons {
+    display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -29,7 +30,7 @@ h1 {
 
 #board, #tile-holder {
     margin-bottom: 20px;
-    margin-left: -0.5em;
+    margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
@@ -46,14 +47,15 @@ h1 {
     padding-left: 10%;
 }
 
-
 .tile-image {
     width: 65px;
     height: 65px;
+
+    right: auto;
+    bottom: auto;
     border-radius: 4px;
-    display: inline;
+
     position: relative;
-    padding-top: 5em;
 }
 
 .tile-hover {
@@ -83,6 +85,8 @@ h1 {
 }
 
 .tile-on-rack {
+    width: 65px;
+    height: 65px;
     margin: 27px 5px 0px 5px;
 }
 
@@ -95,20 +99,13 @@ h1 {
     background-repeat: no-repeat;
 }
 
-button {
-    text-align: center;
-    margin: auto;
-}
-
 .boardSlot {
     border: 2.5px solid black;
 
     width: 72px;
     height: 72px;
 
-    display: inline-flex;
-    margin-left: auto;
-    margin-right: auto;
+    float: left;
 }
 
 #tile-holder img {

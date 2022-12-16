@@ -1,11 +1,8 @@
 import scrabbleJSON from './pieces.json' assert {type: 'json'};
 
-// const constantTileKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-// var tileKeys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_";
-var graphicsFolder = "./graphics_data/"
+// Path to folder containing all letter tile images
 var tileFolder = "./graphics_data/scrabble_tiles/";
 
-var currentTiles = [];
 var boardArray = [];
 var currentWord = [];
 var scrabbleBag = [];
@@ -15,74 +12,114 @@ var highestScore = 0;
 
 var rackSize = 7;
 var boardSize = 14;
-var totalTiles = 0;
+var index;
 
 $(document).ready(function() {
-    console.log("page has loaded");
-    console.log(scrabbleJSON.pieces);
-
+    initScoreData();
     generateBoard();
     generateDistribution();
     generateRack();
+    makeDroppable();
 
+    $("#reset").click(function() {
+        $("#board > div").html("");
+        $("#tile-holder").html("");
+
+        generateDistribution();
+        generateRack();
+        makeDroppable();
+        enableDroppable();
+
+        // $("#board > div").each(function() {
+        //     $(this).droppable("enable");
+        // })
+    });
+
+    $("#board > div").on("updateBoard", function() {
+        $("#board > div").each(function() {
+            
+        })
+    });
+})
+
+function makeDroppable() {
+    $(".boardSlot").droppable({
+        accept: function(draggable) {
+            if ($(".boardSlot").hasClass(".ui-droppable-disabled") && !$(".boardSlot").firstChild) {
+                return true;
+            }
+        },
+        classes: {"ui-droppable-active": "ui-state-default"},
+        hoverClass: "ui-state-active",
+        drop: function(event, ui) {
+        
+            $(this).append(ui.draggable);
+
+            $(this).find(".draggable").css({
+                position: "relative",
+                top: 2,
+                left: 0,
+            });
+
+            $(this).find(".draggable").removeClass("tile-on-rack");
+            $(this).find(".draggable").addClass("tile-on-board").trigger("updateBoard");
+
+            $(event.target).droppable("disable");
+        }
+    });
+
+    for (var i = 0; i < rackSize; i++) {
+        $("#tile" + i).draggable({
+            revert: 'invalid',
+            zIndex: 1000,
+            revertDuration: 100,
+        });    
+    
+        if (index > -1) {
+            scrabbleBag.splice(index, 1);
+        } 
+
+        console.log(scrabbleBag);
+    }
+}
+
+function enableDroppable() {
+    $(".boardSlot").droppable("enable");
+}
+
+// Initialize current score and highest score to 0.
+function initScoreData() {
     $("#score").append(currentScore);
     $("#highestScore").append(highestScore);
+}
 
-    for (var i = 0; i < scrabbleJSON.pieces.length; i++) {
-        let amount = scrabbleJSON.pieces[i]["amount"];
-        totalTiles += amount;
-    }
-
-    console.log(totalTiles);
-})
-
-const resetButton = $("#reset");
-
-resetButton.click(function() {
-    $("#tile-holder").html("");
-    generateDistribution();
-    generateRack();
-})
-
+// Board Array created for tile placement. 
+// Designates type of tile and used to calculate overall score.
 function generateBoard() {
     var boardElement = $("#board");
     var i;
 
+    // currentWord array initialized to *, which represent gaps.
     for (i = 0; i < boardSize; i++) {
         boardArray.push("Tile");
+        currentWord.push("*");
     }
 
+    // Initialized for board creation
     boardArray[2] = boardArray[12] = "DoubleWord";
     boardArray[6] = boardArray[8] = "DoubleLetter";
 
+    // Div creation
     for (i = 0; i < boardSize; i++) {
-        var tileAttribute = '<div class="boardSlot" id="slot' + i + '" style="background-image: url(\'../graphics_data/Scrabble_Board_' + boardArray[i] + '.png\');"></div>'
+        var tileAttribute = '<div class="boardSlot" col="' + i + '" style="background-image: url(\'../graphics_data/Scrabble_Board_' + boardArray[i] + '.png\');"></div>'
         boardElement.append(tileAttribute);
-
-        $("#slot" + i).droppable({
-            classes: {"ui-droppable-active": "ui-state-default"},
-            hoverClass: "ui-state-active",
-            drop: function(event, ui) {
-                $(this).append(ui.draggable);
-
-                $(this).find(".draggable").css({
-                position: "relative",
-                top: 0,
-                left: 0,
-                margin: "-1px",
-                width: $(this).width() + "px"
-                });
-
-                $(event.target).droppable("disable");
-
-                let dragLetter = $(this).find(".draggable").attr("letter");
-                currentWord.push(dragLetter);
-                parseWord();
-            }
-        });
     }
+
+    console.log(boardArray);
 }
 
+// Used to initialize and reset the distribution of the Scrabble bag.
+// Adds 100 tiles to the array (or resets it) to represent the bag.
 function generateDistribution() {
     scrabbleBag = [];
     let pieces = scrabbleJSON.pieces;
@@ -96,17 +133,15 @@ function generateDistribution() {
     console.log(scrabbleBag);
 }
 
-
+// Function to generate the rack with a random set of 7 tiles.
+// Calculates a random index based on the size of the bag.
+// Creates a div for the tile, then takes that tile out of the bag (splices the array).
 function generateRack() {
 
     for (let i = 0; i < rackSize; i++) {
-        var index = Math.floor(Math.random() * scrabbleBag.length);
+        index = Math.floor(Math.random() * scrabbleBag.length);
         var randomLetter = scrabbleBag[index];
         var letterAttribute;
-        
-        // console.log(randomLetter);
-        // console.log(--letterAmount);
-        currentTiles.push(scrabbleJSON.pieces[randomLetter]);
 
         if (randomLetter == '_') {
             letterAttribute = "Blank";
@@ -117,7 +152,8 @@ function generateRack() {
         }
 
         let filePath = tileFolder + "Scrabble_Tile_" + letterAttribute + ".jpg";
-        let imgAttribute = '<img id="tile' + i + '" src="' + filePath + '" class="tile-image tile-on-rack draggable ui-draggable ui-draggable-handle" letter="' + letterAttribute + '" style="position: relative;">';
+        let imgAttribute = '<img id="tile' + i + '" src="' + filePath + '" class="tile-image tile-on-rack draggable" letter="' + letterAttribute + '" style="position: relative;">';
+        $("#tile-holder").append(imgAttribute);
 
         $("#tile-holder").droppable({
             classes: {"ui-droppable-active": "ui-state-default"},
@@ -125,31 +161,10 @@ function generateRack() {
             drop: function(event, ui) {
                 $(this).append(ui.draggable);
 
-                $(this).find(".draggable").css({
-                    position: "relative",
-                    margin: "-1px"
-                });
+                $(this).find(".draggable").addClass("tile-on-rack");
+                $(this).find(".draggable").removeClass("tile-on-board").trigger("updateBoard");
             }
-
         });
-
-        $("#tile-holder").append(imgAttribute);
-        $("#tile" + i).draggable({
-            revert: 'invalid',
-            zIndex: 1000,
-            revertDuration: 100,
-        });
-
-        if (index > -1) {
-            scrabbleBag.splice(index, 1);
-        }
-
-        console.log(scrabbleBag);
-    }
-}
-
-function parseWord() {
-    for (let i = 0; i < currentWord.length; i++) {
-        
+         
     }
 }
