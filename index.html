@@ -11,10 +11,15 @@
 <body>
     <h1>A Bit of Scrabble</h1>
 
+    <div id="wordDiv">
+        <p id="word">Your word will appear here.</p>
+    </div>
+
     <div id="data">
-        <p id="word">Word: </p>
         <p id="score">Score: </p>
         <p id="highestScore">Highest Score: </p>
+        <p id="totalWordScore">Total Score:</p>
+        <p id="highestTotalScore">Highest Total Score: </p>
         <p id="tilesLeft">Tiles Left: </p>
     </div>
 
@@ -23,10 +28,13 @@
     <div id="board">
         <!--Board container, JS file places divs for tiles-->
     </div>
+    <div id="blankTileMenu">
+        <!--Container for blank tile menu-->
+    </div>
     <br>
     <div id="gameButtons">
         <button id="nextWord" class="button">Next Word</button>
-        <button id="reset" class="button">Reset Tiles</button>
+        <button id="reset" class="button">Reset Game</button>
     </div>
     <br>
     <div id="error">
@@ -38,7 +46,7 @@
         <!--Container for all tiles and tile holder-->
     </div>
 
-    <div id="tradeLetter" class="ui-droppable">
+    <div id="tradeLetter">
         <p>Drag a letter here to trade it.</p>
         <!--Container for switching letters-->
     </div>
