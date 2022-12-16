@@ -30,25 +30,18 @@ $(document).ready(function() {
         makeDroppable();
         enableDroppable();
 
-        // $("#board > div").each(function() {
-        //     $(this).droppable("enable");
-        // })
+        // Clear current word array
+        currentWord.length = 0;
     });
 
     $("#board > div").on("updateBoard", function() {
-        $("#board > div").each(function() {
-            
-        })
+        readBoard();
+        calculateScore();
     });
 })
 
 function makeDroppable() {
     $(".boardSlot").droppable({
-        accept: function(draggable) {
-            if ($(".boardSlot").hasClass(".ui-droppable-disabled") && !$(".boardSlot").firstChild) {
-                return true;
-            }
-        },
         classes: {"ui-droppable-active": "ui-state-default"},
         hoverClass: "ui-state-active",
         drop: function(event, ui) {
@@ -85,6 +78,7 @@ function makeDroppable() {
 
 function enableDroppable() {
     $(".boardSlot").droppable("enable");
+    console.log("boardSlot opened");
 }
 
 // Initialize current score and highest score to 0.
@@ -114,7 +108,6 @@ function generateBoard() {
         var tileAttribute = '<div class="boardSlot" col="' + i + '" style="background-image: url(\'../graphics_data/Scrabble_Board_' + boardArray[i] + '.png\');"></div>'
         boardElement.append(tileAttribute);
     }
-
     console.log(boardArray);
 }
 
@@ -161,10 +154,77 @@ function generateRack() {
             drop: function(event, ui) {
                 $(this).append(ui.draggable);
 
+                $(this).find(".draggable").css({
+                    position: "relative",
+                    top: 2,
+                    left: 0,
+                });
+
                 $(this).find(".draggable").addClass("tile-on-rack");
                 $(this).find(".draggable").removeClass("tile-on-board").trigger("updateBoard");
             }
         });
          
+    }
+}
+
+// Function to read the board every time it's updated.
+function readBoard() {
+    var i = 0;
+
+    $("#word").html("");
+    $("#word").html("Word: ");
+    console.log("readBoard() called");
+
+    $("#board > div").each(function() {
+        let tileLetter = $(this).children("img").attr("letter");
+        if (tileLetter === undefined) {
+            tileLetter = " ";
+        }
+
+        currentWord[i++] = tileLetter;
+
+        console.log(tileLetter);
+        console.log(currentWord);
+        $("#word").append(tileLetter);
+    })
+}
+
+function updateData() {
+    var scoreHTML = $("#score");
+    var highestScoreHTML = $("#highestScore")
+
+    scoreHTML.html("");
+    scoreHTML.html("Score: " + score);
+
+    if (score > highestScore) {
+        highestScore = score;
+
+        highestScoreHTML.html("");
+        highestScoreHTML.html("Highest Score: " + highestScore);
+    }
+}
+
+// Function to calculate score and save the highest score.
+function calculateScore() {
+    var i = 0;
+    var pieces = scrabbleJSON.pieces;
+
+    for (i = 0; i < boardSize; i++) {
+        let letter = currentWord[i];
+
+        if (boardArray[i] == "Tile") {
+            score += pieces[letter].value;
+            updateData();
+        }
+
+        else if (boardArray[i] == "DoubleLetter") {
+            score += pieces[letter].value * 2;
+            updateData();
+        }
+
+        else if (boardArray[i] == "DoubleWord") {
+
+        }
     }
 }
