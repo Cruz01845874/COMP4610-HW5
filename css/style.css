@@ -47,12 +47,14 @@ h1 {
 .tile-image {
     width: 65px;
     height: 65px;
+    /* margin: 27px 5px 0px 5px; */
 
     right: auto;
     bottom: auto;
     border-radius: 4px;
 
     position: relative;
+    padding-top: 5em;
 }
 
 .tile-hover {
