@@ -13,7 +13,7 @@ h1 {
 }
 
 .button {
-    background-color: rgb(21, 189, 15);
+    background-color: rgb(199, 187, 17);
     border: 2.5px solid black;
     border-radius: 4px;
 
@@ -36,6 +36,7 @@ h1 {
     width: 100%;
     text-align: center;
     display: inline-block;
+    margin-bottom: 2em;
 }
 
 #tile-holder {
@@ -43,6 +44,7 @@ h1 {
     margin-right: auto;
     margin-bottom: 20px;
     text-align: center;
+    background: none;
 }
 
 #data {
@@ -105,8 +107,13 @@ h1 {
     position: relative;
 }
 
-.ui-state-active {
-    border: 1px solid green;
+#tile-holder.ui-state-active {
+    border: 0px solid black;
+}
+
+.boardSlot.ui-state-active {
+    box-shadow: 0px 0px 5px rgb(52, 167, 17);
+    background: none;
 }
 
 .tile-on-rack {
@@ -117,7 +124,7 @@ h1 {
 
 #tile-holder {
     width: 660px;
-    height: 200px;
+    height: 185px;
     margin-left: auto;
     margin-right: auto;
     background-image: url('../graphics_data/scrabble-tile-holder-406774_640.png');
@@ -168,9 +175,17 @@ h1 {
     background-color: whitesmoke;
 
     display: block;
-    min-width:min-content;
+    min-width: 30%;
 }
 
-#wrapper {
-    
+/* #wrapper {
+    max-width: 1500px;
+    padding-bottom: 70px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0px 2px 16px grey;
+} */
+
+.ui-dialog-content {
+    font-size: 14px;
 }

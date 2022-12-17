@@ -24,6 +24,7 @@ var index;
 // On Scrabble Launch
 $(document).ready(function() {
     createDictionary();
+    createHelpDialog();
     initScoreData();
     generateBoard();
     generateDistribution();
@@ -55,6 +56,8 @@ $(document).ready(function() {
 
     $("#reset").click(function() {
         tilesGiven = 0;
+        currentScore = 0;
+        highestScore = 0;
         $("#word").html("Your word will appear here.");
         clearBoard();
         
@@ -65,6 +68,10 @@ $(document).ready(function() {
         generateRack();
         makeDroppable();
         enableDroppable();
+        updateData(false);
+
+        $("#highestScore").html("");
+        $("#highestScore").html("Highest Score: " + highestScore);
 
         // Clear current word array
         currentWord.length = 0;
@@ -72,6 +79,10 @@ $(document).ready(function() {
         totalTiles = 100;
         displayRemainingTiles();
     });
+
+    $("#helpButton").click(function() {
+        $("#helpDialog").dialog('open');
+    })
 
     $("#board > div").on("updateBoard", function() {
         readBoard();
@@ -151,6 +162,11 @@ function generateRack() {
 
         let filePath = tileFolder + "Scrabble_Tile_" + letterAttribute + ".jpg";
         let imgAttribute = '<img id="tile' + tilesGiven + '" src="' + filePath + '" class="tile-image tile-on-rack draggable" letter="' + letterAttribute + '" style="position: relative;">';
+
+        if (letterAttribute == "Blank") {
+            $(imgAttribute).addClass("blank-tile");
+        }
+
         $("#tile-holder").append(imgAttribute);
 
         $("#tile-holder").droppable({
@@ -164,6 +180,10 @@ function generateRack() {
                     top: 2,
                     left: 0,
                 });
+
+                if ($(ui.draggable).hasClass("blank-tile")) {
+                    $(ui.draggable).attr("src", tileFolder + "Scrabble_Tile_Blank.jpg");
+                }
 
                 $(this).find(".draggable").addClass("tile-on-rack");
                 $(this).find(".draggable").removeClass("tile-on-board").trigger("updateBoard");
@@ -235,10 +255,8 @@ function makeDroppable() {
             $(this).find(".draggable").addClass("tile-on-board").trigger("updateBoard");
 
             if ($(this).find(".draggable").attr("letter") == "Blank") {
-                var chosenLetter;
-
                 $("#blankTileMenu").dialog('open');
-                chosenLetter = getChosenTileFromBlank();
+                getChosenTileFromBlank($(ui.draggable), $(ui.draggable).attr("id"));
             }
         }
     });
@@ -274,7 +292,7 @@ function readBoard() {
         console.log(tileLetter);
         console.log(currentWord);
 
-        if (tileLetter != "-") {
+        if (tileLetter != "-" && tileLetter != "Blank") {
             $("#word").append(tileLetter);
         }
         
@@ -450,10 +468,21 @@ function createBlankTileMenu() {
 }
 
 // Get the user's choice from the blank tile
-function getChosenTileFromBlank() {
+function getChosenTileFromBlank(blankDraggable, tileID) {
     $("#blankTileMenu > img").click(function() {
         console.log("Tile from menu clicked");
-        blankTileMenu.dialog('close');
-        return $(this).attr("letter");
+        var newLetter = $(this).attr("letter");
+
+        blankDraggable.attr("letter", newLetter);
+        blankDraggable.attr("src", tileFolder + "Scrabble_Tile_" + newLetter + ".jpg");
+        tileID = blankDraggable.attr("id");
+        $("#blankTileMenu").dialog('close');
+
+        readBoard();
     })
+}
+
+function createHelpDialog() {
+    $("#helpDialog").dialog({draggable: false});
+    $("#helpDialog").dialog('close');
 }

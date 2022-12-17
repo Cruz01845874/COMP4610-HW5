@@ -31,21 +31,32 @@
         <div id="blankTileMenu">
             <!--Container for blank tile menu-->
         </div>
-        <br>
-        <div id="gameButtons">
-            <button id="nextWord" class="button">Next Word</button>
-            <button id="reset" class="button">Reset Game</button>
-        </div>
-        <br>
         <div id="error">
             <!--Container for error messages-->
         </div>
-    
+        <div id="helpDialog" title="Rules">
+            <ul>
+                <li>Words must be valid before moving onto the next one.</li>
+                <li>Submitting a word removes those tiles from the bag.</li>
+                <li>You can't have any gaps in your word.</li>
+                <li>Resetting the game will reset both your scores, but it will also put all the tiles back in the bag.</li>
+            </ul>
+        </div>
+
         <!-- <img src="./graphics_data/scrabble_tiles/Scrabble_Tile_K.jpg" class="tile-image ui-draggable ui-draggable-handle" letter="K" style="position: relative;"> -->
         <div id="tile-holder">
             <!--Container for all tiles and tile holder-->
         </div>
     
+        <div id="gameButtons">
+            <button id="nextWord" class="button">Next Word</button>
+            <button id="reset" class="button">Reset Game</button>
+            <button id="helpButton" class="button">Help</button>
+        </div>
+
+        <br>
+        <br>
+
         <div id="tradeLetter">
             <p>Drag a letter here to trade it.</p>
             <!--Container for switching letters-->
