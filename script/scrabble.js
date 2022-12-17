@@ -7,6 +7,7 @@ var tileFolder = "./graphics_data/scrabble_tiles/";
 var boardArray = [];
 var currentWord = [];
 var scrabbleBag = [];
+var scrabbleDictionary = [];
 
 var currentScore = 0;
 var highestScore = 0;
@@ -22,6 +23,7 @@ var index;
 
 // On Scrabble Launch
 $(document).ready(function() {
+    createDictionary();
     initScoreData();
     generateBoard();
     generateDistribution();
@@ -41,7 +43,7 @@ $(document).ready(function() {
             }
         }
 
-        $("#word").html("");
+        $("#word").html("Your word will appear here.");
         
         getMoreTiles();
         clearBoard();
@@ -53,8 +55,9 @@ $(document).ready(function() {
 
     $("#reset").click(function() {
         tilesGiven = 0;
+        $("#word").html("Your word will appear here.");
         clearBoard();
-
+        
         // Clear rack
         $("#tile-holder").html("");
 
@@ -63,12 +66,10 @@ $(document).ready(function() {
         makeDroppable();
         enableDroppable();
 
-        $("#word").html("");
-
         // Clear current word array
         currentWord.length = 0;
 
-        remainingTiles = 100;
+        totalTiles = 100;
         displayRemainingTiles();
     });
 
@@ -77,6 +78,20 @@ $(document).ready(function() {
         calculateScore();
     });
 })
+
+// Create the Scrabble Dictionary to check if word is valid.
+function createDictionary() {
+    $.ajax({
+        url: "./dictionary.txt",
+        success: function(result) {
+            var words = result.split("\n");
+
+            for (var i = 0; i < words.length; i++) {
+                scrabbleDictionary[i] = words;
+            }
+        }
+    })
+}
 
 // Board Array created for tile placement. 
 // Designates type of tile and used to calculate overall score.
@@ -258,7 +273,14 @@ function readBoard() {
 
         console.log(tileLetter);
         console.log(currentWord);
-        $("#word").append(tileLetter);
+
+        if (tileLetter != "-") {
+            $("#word").append(tileLetter);
+        }
+        
+        // if (!checkWordValidity()) {
+        //     $("#wordDiv").css("background-color: red;")
+        // }
     })
 }
 
@@ -412,6 +434,10 @@ function createBlankTileMenu() {
 
         blankTileMenu.append(imgAttribute);
     }
+
+    blankTileMenu.dialog({
+        title: "Choose Your Letter"
+    });
 
     blankTileMenu.dialog({
         open: function() {

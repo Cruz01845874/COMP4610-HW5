@@ -11,45 +11,48 @@
 <body>
     <h1>A Bit of Scrabble</h1>
 
-    <div id="wordDiv">
-        <p id="word">Your word will appear here.</p>
-    </div>
+    <div id="wrapper">
 
-    <div id="data">
-        <p id="score">Score: </p>
-        <p id="highestScore">Highest Score: </p>
-        <p id="totalWordScore">Total Score:</p>
-        <p id="highestTotalScore">Highest Total Score: </p>
-        <p id="tilesLeft">Tiles Left: </p>
-    </div>
+        <div id="wordDiv">
+            <p id="word">Your word will appear here.</p>
+        </div>
+    
+        <div id="data">
+            <p id="score">Score: </p>
+            <p id="highestScore">Highest Score: </p>
+            <p id="tilesLeft">Tiles Left: </p>
+        </div>
+    
+        <br><br>
+    
+        <div id="board">
+            <!--Board container, JS file places divs for tiles-->
+        </div>
+        <div id="blankTileMenu">
+            <!--Container for blank tile menu-->
+        </div>
+        <br>
+        <div id="gameButtons">
+            <button id="nextWord" class="button">Next Word</button>
+            <button id="reset" class="button">Reset Game</button>
+        </div>
+        <br>
+        <div id="error">
+            <!--Container for error messages-->
+        </div>
+    
+        <!-- <img src="./graphics_data/scrabble_tiles/Scrabble_Tile_K.jpg" class="tile-image ui-draggable ui-draggable-handle" letter="K" style="position: relative;"> -->
+        <div id="tile-holder">
+            <!--Container for all tiles and tile holder-->
+        </div>
+    
+        <div id="tradeLetter">
+            <p>Drag a letter here to trade it.</p>
+            <!--Container for switching letters-->
+        </div>
 
-    <br><br>
-
-    <div id="board">
-        <!--Board container, JS file places divs for tiles-->
     </div>
-    <div id="blankTileMenu">
-        <!--Container for blank tile menu-->
-    </div>
-    <br>
-    <div id="gameButtons">
-        <button id="nextWord" class="button">Next Word</button>
-        <button id="reset" class="button">Reset Game</button>
-    </div>
-    <br>
-    <div id="error">
-        <!--Container for error messages-->
-    </div>
-
-    <!-- <img src="./graphics_data/scrabble_tiles/Scrabble_Tile_K.jpg" class="tile-image ui-draggable ui-draggable-handle" letter="K" style="position: relative;"> -->
-    <div id="tile-holder" class="ui-droppable">
-        <!--Container for all tiles and tile holder-->
-    </div>
-
-    <div id="tradeLetter">
-        <p>Drag a letter here to trade it.</p>
-        <!--Container for switching letters-->
-    </div>
+    
 </body>
 
 <!-- <script src="script/jquery-ui-1.13.2/jquery-ui.js"></script> -->
