@@ -75,6 +75,7 @@ $(document).ready(function() {
         
         getMoreTiles();
         clearBoard();
+        updateHighestScore();
         clearCurrentScore();
         makeDroppable();
         enableDroppable();
@@ -234,25 +235,9 @@ function clearCurrentScore() {
     $("#score").html("Score: 0");
 }
 
-// Checks if board slot is empty so it can be droppable again.
-function boardSlotIsEmpty(slotNumber) {
-    return typeof($("#board > div").attr("id") === undefined);
-}
-
+// makes the boardSlot droppable
 function makeDroppable() {
     $(".boardSlot").droppable({
-        accept: function() {
-            var slot = $(this).attr("col");
-
-            if (boardSlotIsEmpty(slot)) {
-                return true;
-            }
-
-            else {
-                return false;
-            }
-        },
-
         classes: {"ui-droppable-active": "ui-state-default"},
         hoverClass: "ui-state-active",
         drop: function(event, ui) {
@@ -335,8 +320,7 @@ function readBoard() {
 // Update the scores
 function updateData(isDoubleWord) {
     var scoreHTML = $("#score");
-    var highestScoreHTML = $("#highestScore")
-
+    
     scoreHTML.html("");
 
     scoreHTML.html("Score: " + currentScore);
@@ -345,16 +329,9 @@ function updateData(isDoubleWord) {
         currentScore *= 2;
         scoreHTML.html("Score: " + (currentScore));
     }
-
-    if (currentScore > highestScore) {
-        highestScore = currentScore;
-
-        highestScoreHTML.html("");
-        highestScoreHTML.html("Highest Score: " + highestScore);
-    }
 }
 
-// Function to calculate score and save the highest score.
+// Function to calculate score.
 function calculateScore() {
     var i = 0;
     var sum = 0;
@@ -389,6 +366,18 @@ function calculateScore() {
             doubleWord = true;
             updateData(doubleWord);
         }
+    }
+}
+
+// Function to save the highest score.
+function updateHighestScore() {
+    var highestScoreHTML = $("#highestScore")
+
+    if (currentScore > highestScore) {
+        highestScore = currentScore;
+
+        highestScoreHTML.html("");
+        highestScoreHTML.html("Highest Score: " + highestScore);
     }
 }
 
@@ -521,9 +510,17 @@ function createHelpDialog() {
 // checks if word exists in dictionary
 function wordIsValid(wordQuery) {
 
-    console.log(scrabbleDict[wordQuery]);
+    // on server
+    // console.log(scrabbleDict[wordQuery]);
 
-    if (wordQuery.length > 2 && scrabbleDict[wordQuery] == true) {
+    // if (wordQuery.length > 2 && scrabbleDict[wordQuery] == true) {
+    //     return true;
+    // }
+
+    // Locally
+    console.log(scrabbleDict[wordQuery + "\r"]);
+
+    if (wordQuery.length > 2 && scrabbleDict[wordQuery + "\r"] == true) {
         return true;
     }
 
