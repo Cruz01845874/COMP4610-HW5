@@ -3,7 +3,7 @@ import scrabbleJSON from './pieces.json' assert {type: 'json'};
 "use strict";
 
 // Path to folder containing all letter tile images
-var tileFolder = "./graphics_data/scrabble_tiles/";
+var tileFolder = "graphics_data/scrabble_tiles/";
 
 // Global Variables
 var boardArray = [];
@@ -25,12 +25,11 @@ var boardSize = 14;
 // Bag index when searching for tiles or regenerating distribution
 var index;
 
-
 // On Scrabble Launch
 $(document).ready(function() {
     // AJAX request for the dictionary
     $.ajax({
-        url: "./dictionary.txt",
+        url: "dictionary.txt",
         success: function(result) {
             var words = result.split("\n");
     
@@ -92,6 +91,7 @@ $(document).ready(function() {
         enableDroppable();
         updateData(false);
 
+        $("#wordDiv").css("background-color", "white");
         $("#nextWord").css("background-color", "red")
         $("#highestScore").html("");
         $("#highestScore").html("Highest Score: " + highestScore);
@@ -109,7 +109,6 @@ $(document).ready(function() {
 
     $("#board > div").on("updateBoard", function() {
         readBoard();
-        calculateScore();
     });
 })
 
@@ -196,6 +195,7 @@ function generateRack() {
 
                 $(this).find(".draggable").addClass("tile-on-rack");
                 $(this).find(".draggable").removeClass("tile-on-board").trigger("updateBoard");
+                readBoard();
             }
         });
     
@@ -313,12 +313,15 @@ function readBoard() {
     console.log("word: " + word);
 
     if (wordIsValid(word)) {
+        calculateScore();
         $("#nextWord").removeAttr("disabled");
         $("#nextWord").css("background-color", "rgb(0,255,0)")
         $("#wordDiv").css("background-color", "rgb(0,255,0)")
     }
 
     else {
+        $("#nextWord").attr("disabled", true);
+        $("#nextWord").css("background-color", "red")
         $("#wordDiv").css("background-color", "rgb(255,0,0)");
     }
 }
@@ -333,7 +336,8 @@ function updateData(isDoubleWord) {
     scoreHTML.html("Score: " + currentScore);
 
     if (isDoubleWord) {
-        scoreHTML.html("Score: " + currentScore + " (&#215;2!)");
+        currentScore *= 2;
+        scoreHTML.html("Score: " + (currentScore));
     }
 
     if (currentScore > highestScore) {
@@ -374,6 +378,8 @@ function calculateScore() {
         }
 
         else if (boardArray[i] == "DoubleWord") {
+            sum += pieces[index].value;
+            currentScore = sum;
             doubleWord = true;
             updateData(doubleWord);
         }
