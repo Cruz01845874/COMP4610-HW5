@@ -130,7 +130,7 @@ function generateBoard() {
 
     // Div creation
     for (i = 0; i < boardSize; i++) {
-        var tileAttribute = '<div class="boardSlot" col="' + i + '" style="background-image: url(\'../graphics_data/Scrabble_Board_' + boardArray[i] + '.png\');"></div>'
+        var tileAttribute = '<div class="boardSlot" col="' + i + '" style="background-image: url(\'graphics_data/Scrabble_Board_' + boardArray[i] + '.png\');"></div>'
         boardElement.append(tileAttribute);
     }
 }
