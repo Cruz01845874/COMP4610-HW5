@@ -32,7 +32,8 @@ $(document).ready(function() {
         url: "dictionary.txt",
         success: function(result) {
             var words = result.split("\n");
-    
+            console.log(words);
+
             for (var i = 0; i < words.length; i++) {
                 scrabbleDict[words[i].toUpperCase()] = true;
             }
