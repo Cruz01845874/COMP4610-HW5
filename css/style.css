@@ -180,7 +180,8 @@ h1 {
 
 #wrapper {
     background-color: bisque;
-    max-width: 1250px;
+    min-width: 1080px;
+    max-width: 1600px;
     padding: 35px;
     padding-bottom: 70px;
     margin-left: auto;

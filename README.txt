@@ -102,3 +102,9 @@ EXTRA CREDIT
       This isn't part of the extra credit, but I thought that it should be implemented as it's also a rule of Scrabble.
       If the user gets stuck and doesn't want to reset their score, they can exchange a tile for another random one. 
       Note: this puts it back in the bag so the user can possibly reclaim it again.
+
+KNOWN BUGS
+    * Blank tile
+    
+      As of right now, you cannot choose a different letter for a blank tile after taking it back to the rack. 
+      For example, if you select J for your blank tile, that and the other blank tile will turn into a J.

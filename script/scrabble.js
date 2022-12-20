@@ -60,7 +60,7 @@ $(document).ready(function() {
 
     $("#nextWord").click(function() {
         for (let i = 0; i < currentWord.length; i++) {
-            if (currentWord[i] == '-') {
+            if (currentWord[i] == ' ') {
                 continue;
             }
 
@@ -238,6 +238,8 @@ function clearCurrentScore() {
 // makes the boardSlot droppable
 function makeDroppable() {
     $(".boardSlot").droppable({
+    
+
         classes: {"ui-droppable-active": "ui-state-default"},
         hoverClass: "ui-state-active",
         drop: function(event, ui) {
@@ -285,7 +287,7 @@ function readBoard() {
     $("#board > div").each(function() {
         let tileLetter = $(this).children("img").attr("letter");
         if (tileLetter === undefined) {
-            tileLetter = "-";
+            tileLetter = " ";
         }
 
         currentWord[i++] = tileLetter;
@@ -296,11 +298,12 @@ function readBoard() {
     })
 
     for (i = 0; i < currentWord.length; i++) {
-        if (currentWord[i] != "-") {
+        if (currentWord[i] != " ") {
             word += currentWord[i];
         }
     }
 
+    word = word.trim();
     console.log("word: " + word);
 
     if (wordIsValid(word)) {
@@ -342,7 +345,7 @@ function calculateScore() {
     currentScore = sum;
 
     for (i = 0; i < boardSize; i++) {
-        if (currentWord[i] == '-') {
+        if (currentWord[i] == ' ') {
             continue;
         }
 
@@ -517,7 +520,7 @@ function wordIsValid(wordQuery) {
     //     return true;
     // }
 
-    // Locally
+    //Locally
     console.log(scrabbleDict[wordQuery + "\r"]);
 
     if (wordQuery.length > 2 && scrabbleDict[wordQuery + "\r"] == true) {
