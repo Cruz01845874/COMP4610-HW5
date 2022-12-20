@@ -514,18 +514,18 @@ function createHelpDialog() {
 function wordIsValid(wordQuery) {
 
     // on server
-    // console.log(scrabbleDict[wordQuery]);
+    console.log(scrabbleDict[wordQuery]);
 
-    // if (wordQuery.length > 2 && scrabbleDict[wordQuery] == true) {
-    //     return true;
-    // }
-
-    //Locally
-    console.log(scrabbleDict[wordQuery + "\r"]);
-
-    if (wordQuery.length > 2 && scrabbleDict[wordQuery + "\r"] == true) {
+    if (wordQuery.length > 2 && scrabbleDict[wordQuery] == true) {
         return true;
     }
 
-    return false;
+    //Locally
+    // console.log(scrabbleDict[wordQuery + "\r"]);
+
+    // if (wordQuery.length > 2 && scrabbleDict[wordQuery + "\r"] == true) {
+    //     return true;
+    // }
+
+    // return false;
 }
