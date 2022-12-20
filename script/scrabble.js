@@ -32,11 +32,13 @@ $(document).ready(function() {
         url: "dictionary.txt",
         success: function(result) {
             var words = result.split("\n");
-            console.log(words);
 
             for (var i = 0; i < words.length; i++) {
+                words[i].replace(/[\r]+/g, "");
                 scrabbleDict[words[i].toUpperCase()] = true;
             }
+
+            console.log(words);
         },
         error: function(result) {
             console.log("ERROR: dictionary file not found");
@@ -519,9 +521,9 @@ function createHelpDialog() {
 // checks if word exists in dictionary
 function wordIsValid(wordQuery) {
 
-    console.log(scrabbleDict[wordQuery + "\r"]);
+    console.log(scrabbleDict[wordQuery]);
 
-    if (wordQuery.length > 2 && scrabbleDict[wordQuery + "\r"] == true) {
+    if (wordQuery.length > 2 && scrabbleDict[wordQuery] == true) {
         return true;
     }
 
