@@ -1,5 +1,7 @@
 import scrabbleJSON from './pieces.json' assert {type: 'json'};
 
+"use strict";
+
 // Path to folder containing all letter tile images
 var tileFolder = "./graphics_data/scrabble_tiles/";
 
@@ -7,11 +9,13 @@ var tileFolder = "./graphics_data/scrabble_tiles/";
 var boardArray = [];
 var currentWord = [];
 var scrabbleBag = [];
-var scrabbleDictionary = [];
 
+// dictionary lookup object
+var scrabbleDict = {};
+
+// Global Scrabble Data
 var currentScore = 0;
 var highestScore = 0;
-
 var rackSize = 7;
 var totalTiles = 100;
 var tilesOnRack = 7;
@@ -21,9 +25,21 @@ var boardSize = 14;
 // Bag index when searching for tiles or regenerating distribution
 var index;
 
+
 // On Scrabble Launch
 $(document).ready(function() {
-    createDictionary();
+    // AJAX request for the dictionary
+    $.ajax({
+        url: "./dictionary.txt",
+        success: function(result) {
+            var words = result.split("\n");
+    
+            for (var i = 0; i < words.length; i++) {
+                scrabbleDict[words[i].toUpperCase()] = true;
+            }
+        }
+    })    
+
     createHelpDialog();
     initScoreData();
     generateBoard();
@@ -32,6 +48,10 @@ $(document).ready(function() {
     makeDroppable();
     createBlankTileMenu();
     displayRemainingTiles();
+
+    if ($("#nextWord").is(":disabled")) {
+        $("#nextWord").css("background-color", "red")
+    }
 
     $("#nextWord").click(function() {
         for (let i = 0; i < currentWord.length; i++) {
@@ -44,7 +64,9 @@ $(document).ready(function() {
             }
         }
 
+        $("#nextWord").css("background-color", "red")
         $("#word").html("Your word will appear here.");
+        $("#nextWord").attr("disabled", true);
         
         getMoreTiles();
         clearBoard();
@@ -70,6 +92,7 @@ $(document).ready(function() {
         enableDroppable();
         updateData(false);
 
+        $("#nextWord").css("background-color", "red")
         $("#highestScore").html("");
         $("#highestScore").html("Highest Score: " + highestScore);
 
@@ -89,20 +112,6 @@ $(document).ready(function() {
         calculateScore();
     });
 })
-
-// Create the Scrabble Dictionary to check if word is valid.
-function createDictionary() {
-    $.ajax({
-        url: "./dictionary.txt",
-        success: function(result) {
-            var words = result.split("\n");
-
-            for (var i = 0; i < words.length; i++) {
-                scrabbleDictionary[i] = words;
-            }
-        }
-    })
-}
 
 // Board Array created for tile placement. 
 // Designates type of tile and used to calculate overall score.
@@ -276,6 +285,7 @@ function initScoreData() {
 // Function to read the board every time it's updated.
 function readBoard() {
     var i = 0;
+    var word = "";
 
     $("#word").html("");
     $("#word").html("");
@@ -289,17 +299,28 @@ function readBoard() {
 
         currentWord[i++] = tileLetter;
 
-        console.log(tileLetter);
-        console.log(currentWord);
-
         if (tileLetter != "-" && tileLetter != "Blank") {
             $("#word").append(tileLetter);
         }
-        
-        // if (!checkWordValidity()) {
-        //     $("#wordDiv").css("background-color: red;")
-        // }
     })
+
+    for (i = 0; i < currentWord.length; i++) {
+        if (currentWord[i] != "-") {
+            word += currentWord[i];
+        }
+    }
+
+    console.log("word: " + word);
+
+    if (wordIsValid(word)) {
+        $("#nextWord").removeAttr("disabled");
+        $("#nextWord").css("background-color", "rgb(0,255,0)")
+        $("#wordDiv").css("background-color", "rgb(0,255,0)")
+    }
+
+    else {
+        $("#wordDiv").css("background-color", "rgb(255,0,0)");
+    }
 }
 
 // Update the scores
@@ -314,8 +335,6 @@ function updateData(isDoubleWord) {
     if (isDoubleWord) {
         scoreHTML.html("Score: " + currentScore + " (&#215;2!)");
     }
-
-    console.log(currentScore);
 
     if (currentScore > highestScore) {
         highestScore = currentScore;
@@ -485,4 +504,16 @@ function getChosenTileFromBlank(blankDraggable, tileID) {
 function createHelpDialog() {
     $("#helpDialog").dialog({draggable: false});
     $("#helpDialog").dialog('close');
+}
+
+// checks if word exists in dictionary
+function wordIsValid(wordQuery) {
+
+    console.log(scrabbleDict[wordQuery + "\r"]);
+
+    if (wordQuery.length > 2 && scrabbleDict[wordQuery + "\r"] == true) {
+        return true;
+    }
+
+    return false;
 }
