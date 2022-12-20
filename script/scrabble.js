@@ -555,5 +555,5 @@ function wordIsValid(wordQuery) {
     //     return true;
     // }
 
-    // return false;
+    return false;
 }
