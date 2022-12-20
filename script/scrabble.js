@@ -36,6 +36,9 @@ $(document).ready(function() {
             for (var i = 0; i < words.length; i++) {
                 scrabbleDict[words[i].toUpperCase()] = true;
             }
+        },
+        error: function(result) {
+            console.log("ERROR: dictionary file not found");
         }
     })    
 
