@@ -1,9 +1,19 @@
+<!--
+File: index.html
+GUI Assignment: HW5 Implementing a Bit of Scrabble with Drag-and-Drop
+Copyright (c) 2022 by Roberto. All rights reserved. May be freely copied or
+excerpted for educational purposes with credit to the author.
+updated by Roberto Cruz on 12/20/22
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Scrabble</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css">
+    
+    <!--jQuery CSS-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +21,13 @@
 <body>
     <div id="wrapper">
     <h1>A Bit of Scrabble</h1>
+        <!--Determines if the word on the board is valid.
+            div will light up green if so, red if not -->
         <div id="wordDiv">
             <p id="word">Your word will appear here.</p>
         </div>
     
+        <!--User Data div-->
         <div id="data">
             <p id="score">Score: </p>
             <p id="highestScore">Highest Score: </p>
@@ -27,11 +40,13 @@
             <!--Board container, JS file places divs for tiles-->
         </div>
         <div id="blankTileMenu">
-            <!--Container for blank tile menu-->
+            <!--Container for blank tile menu: displays menu of all tiles from A to Z-->
         </div>
         <div id="error">
             <!--Container for error messages-->
         </div>
+        
+        <!--Shows after pressing Help Button-->
         <div id="helpDialog" title="Rules">
             <ul>
                 <li>Words must be valid before moving onto the next one.</li><br>
@@ -42,9 +57,8 @@
             </ul>
         </div>
 
-        <!-- <img src="./graphics_data/scrabble_tiles/Scrabble_Tile_K.jpg" class="tile-image ui-draggable ui-draggable-handle" letter="K" style="position: relative;"> -->
         <div id="tile-holder">
-            <!--Container for all tiles and tile holder-->
+            <!--Container for all tiles and tile holder (rack)-->
         </div>
     
         <div id="gameButtons">
@@ -65,7 +79,6 @@
     
 </body>
 
-<!-- <script src="script/jquery-ui-1.13.2/jquery-ui.js"></script> -->
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 

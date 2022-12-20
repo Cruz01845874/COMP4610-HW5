@@ -1,3 +1,16 @@
+// File: scrabble.js
+// GUI Assignment: HW5 Implementing a Bit of Scrabble with Drag-and-Drop
+// Copyright (c) 2022 by Roberto. All rights reserved. May be freely copied or
+// excerpted for educational purposes with credit to the author.
+// updated by Roberto Cruz on 12/20/22
+
+// References:
+// https://johnresig.com/blog/dictionary-lookups-in-javascript/
+// http://yongcho.github.io/GUI-Programming-1/assignment9.html
+// https://downing.io/GUI/assignment9_v2.html
+// Stack Overflow
+// jQuery API website
+
 import scrabbleJSON from './pieces.json' assert {type: 'json'};
 
 "use strict";
@@ -16,11 +29,11 @@ var scrabbleDict = {};
 // Global Scrabble Data
 var currentScore = 0;
 var highestScore = 0;
-var rackSize = 7;
-var totalTiles = 100;
-var tilesOnRack = 7;
 var tilesGiven = 0;
+var rackSize = 7;
+var tilesOnRack = 7;
 var boardSize = 14;
+var totalTiles = 100;
 
 // Bag index when searching for tiles or regenerating distribution
 var index;
@@ -34,7 +47,6 @@ $(document).ready(function() {
             var words = result.split("\n");
 
             for (var i = 0; i < words.length; i++) {
-                words[i].replace(/[\r]+/g, "");
                 scrabbleDict[words[i].toUpperCase()] = true;
             }
 
@@ -54,6 +66,7 @@ $(document).ready(function() {
     createBlankTileMenu();
     displayRemainingTiles();
 
+    // Next Word Button
     if ($("#nextWord").is(":disabled")) {
         $("#nextWord").css("background-color", "red")
     }
@@ -82,6 +95,7 @@ $(document).ready(function() {
         displayRemainingTiles();
     })
 
+    // Reset Button
     $("#reset").click(function() {
         tilesGiven = 0;
         currentScore = 0;
@@ -110,10 +124,12 @@ $(document).ready(function() {
         displayRemainingTiles();
     });
 
+    // Help Button
     $("#helpButton").click(function() {
         $("#helpDialog").dialog('open');
     })
 
+    // If updateBoard event is called from another event, call readBoard()
     $("#board > div").on("updateBoard", function() {
         readBoard();
     });
@@ -125,7 +141,7 @@ function generateBoard() {
     var boardElement = $("#board");
     var i;
 
-    // currentWord array initialized to *, which represent gaps.
+    // currentWord array initialized to -, which represent gaps.
     for (i = 0; i < boardSize; i++) {
         boardArray.push("Tile");
         currentWord.push("-");
@@ -161,8 +177,10 @@ function generateDistribution() {
 function generateRack() {
 
     for (var i = 0; i < rackSize; i++) {
+        // provides a tile, so must increment
         tilesGiven++;
 
+        // get random letter
         index = Math.floor(Math.random() * scrabbleBag.length);
         var randomLetter = scrabbleBag[index];
         var letterAttribute;
@@ -212,6 +230,7 @@ function generateRack() {
             revertDuration: 100,
         });    
     
+        // remove tile from the Scrabble bag
         if (index > -1) {
             scrabbleBag.splice(index, 1);
         } 
@@ -264,6 +283,7 @@ function makeDroppable() {
     });
 }
 
+// tracks if a board slot opened
 function enableDroppable() {
     $(".boardSlot").droppable("enable");
     console.log("boardSlot opened");
@@ -290,19 +310,20 @@ function readBoard() {
             tileLetter = " ";
         }
 
+        // add to current word
         currentWord[i++] = tileLetter;
 
+        // add to word div
         if (tileLetter != "-" && tileLetter != "Blank") {
             $("#word").append(tileLetter);
         }
     })
 
     for (i = 0; i < currentWord.length; i++) {
-        if (currentWord[i] != " ") {
-            word += currentWord[i];
-        }
+        word += currentWord[i];
     }
 
+    // remove beginning and ending whitespace
     word = word.trim();
     console.log("word: " + word);
 
@@ -349,6 +370,7 @@ function calculateScore() {
             continue;
         }
 
+        // calculates with offset
         let index = currentWord[i].charCodeAt() - A;
 
         if (boardArray[i] == "Tile") {
@@ -387,8 +409,11 @@ function updateHighestScore() {
 // When a user trades in a tile
 function getNewTile(replacedLetter) {
     tilesGiven++;
+    
+    // put the letter to be replaced back in the bag
     scrabbleBag.push(replacedLetter);
 
+    // provide another letter tile
     index = Math.floor(Math.random() * scrabbleBag.length);
     var randomLetter = scrabbleBag[index]; 
 
@@ -417,7 +442,7 @@ function getNewTile(replacedLetter) {
     } 
 }
 
-// When the player submits a word, replace the missing tiles.
+// When the player submits a valid word, replace the missing tiles.
 function getMoreTiles() {
     var tilesMissing = rackSize - tilesOnRack;
     console.log("tilesMissing" + tilesMissing);
@@ -456,6 +481,7 @@ function getMoreTiles() {
     tilesOnRack = 7;
 }
 
+// Displays the remaining tiles
 function displayRemainingTiles() {
     $("#tilesLeft").html("");
     $("#tilesLeft").html("Tiles Left: " + (totalTiles - tilesGiven));
@@ -476,6 +502,7 @@ function createBlankTileMenu() {
         blankTileMenu.append(imgAttribute);
     }
 
+    // Blank menu tile dialog, user is unable to close it until they choose a tile
     blankTileMenu.dialog({
         title: "Choose Your Letter"
     });
@@ -505,6 +532,7 @@ function getChosenTileFromBlank(blankDraggable, tileID) {
     })
 }
 
+// Help Dialog (from Help Button)
 function createHelpDialog() {
     $("#helpDialog").dialog({draggable: false});
     $("#helpDialog").dialog('close');
@@ -514,18 +542,18 @@ function createHelpDialog() {
 function wordIsValid(wordQuery) {
 
     // on server
-    console.log(scrabbleDict[wordQuery]);
+    // console.log(scrabbleDict[wordQuery]);
 
-    if (wordQuery.length > 2 && scrabbleDict[wordQuery] == true) {
-        return true;
-    }
-
-    //Locally
-    // console.log(scrabbleDict[wordQuery + "\r"]);
-
-    // if (wordQuery.length > 2 && scrabbleDict[wordQuery + "\r"] == true) {
+    // if (wordQuery.length > 2 && scrabbleDict[wordQuery] == true) {
     //     return true;
     // }
+
+    //Locally
+    console.log(scrabbleDict[wordQuery + "\r"]);
+
+    if (wordQuery.length > 2 && scrabbleDict[wordQuery + "\r"] == true) {
+        return true;
+    }
 
     return false;
 }

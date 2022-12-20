@@ -1,3 +1,12 @@
+/*
+File: style.css
+GUI Assignment: HW5 Implementing a Bit of Scrabble with Drag-and-Drop
+Copyright (c) 2022 by Roberto. All rights reserved. May be freely copied or
+excerpted for educational purposes with credit to the author.
+updated by Roberto Cruz on 12/20/22
+*/
+
+/* Background color of body, excluding wrapper; also sets min-width of the game */
 body {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: rgb(185, 127, 40);
@@ -8,45 +17,59 @@ h1 {
     text-align: center;
 }
 
-#gameButtons {
-    text-align: center;
-}
-
-.button {
-    background-color: rgb(199, 187, 17);
-    border: 2.5px solid black;
-    border-radius: 4px;
-
-    color: white;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    padding: 10px 25px;
-    text-align: center;
-    text-decoration: none;
-
-    font-size: 16px;
-    margin: 10px auto auto 10px;
-    cursor: pointer;
-}
-
-.button:hover {
-    box-shadow: 0px 0px 5px rgb(255, 255, 255);
-}
-
-#board {
-    width: 100%;
-    text-align: center;
-    display: inline-block;
-    margin-bottom: 2em;
-}
-
-#tile-holder {
+/* wraps the game content in separate div */
+#wrapper {
+    background-color: bisque;
+    min-width: 1080px;
+    max-width: 1600px;
+    padding: 35px;
+    padding-bottom: 70px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 20px;
-    text-align: center;
-    background: none;
+    box-shadow: 0px 2px 16px grey;
 }
 
+/* jQuery Dialog box content */
+.ui-dialog-content {
+    font-size: 14px;
+}
+
+/* jQuery Dialog box header */
+.ui-widget-header {
+    position: absolute;
+    border: 2px solid black !important;
+    background: white !important; 
+}
+
+.droppable {
+    padding: 5px;
+    margin: 2px;
+    border: 1px solid black;
+    text-align: center;
+    background-color: green;
+    position: relative;
+}
+
+/* div that shows the word and if its valid or not */
+#wordDiv {
+    border: 2.5px solid black;
+    border-radius: 1px;
+    padding-bottom: 2.5px;
+    border-bottom: 0px;
+    width: 30%;
+    margin: auto;
+    text-align: center;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: xx-large;
+    background-color: whitesmoke;
+
+    display: block;
+    min-width: 30%;
+}
+
+/* data below word div (i.e. highest score, current score, remaining tile) */
 #data {
     border: 2.5px solid black;
     padding-top: 10px;
@@ -69,6 +92,85 @@ h1 {
     min-width: fit-content;
 }
 
+/* gameButtons div (i.e., next word, help, reset) */
+#gameButtons {
+    text-align: center;
+}
+
+.button {
+    background-color: rgb(199, 187, 17);
+    border: 2.5px solid black;
+    border-radius: 4px;
+
+    color: white;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+
+    font-size: 16px;
+    margin: 10px auto auto 10px;
+    cursor: pointer;
+}
+
+.button:hover {
+    box-shadow: 0px 0px 5px rgb(255, 136, 0);
+}
+
+/* Board div (encapsulates individual boardSlot divs) */
+#board {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    margin-bottom: 2em;
+}
+
+/* individual board slot divs */
+.boardSlot {
+    border: 2.5px solid black;
+
+    width: 72px;
+    height: 72px;
+
+    vertical-align: middle;
+    margin: auto;
+    display: inline-block;
+}
+
+.boardSlot.ui-state-active {
+    box-shadow: 0px 0px 5px rgb(52, 167, 17);
+    background: none;
+}
+
+/* tile holder/rack */
+#tile-holder {
+    width: 660px;
+    height: 185px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    text-align: center;
+    background: none;
+    background-image: url('../graphics_data/scrabble-tile-holder-406774_640.png');
+    background-repeat: no-repeat;
+}
+
+#tile-holder img {
+    margin: auto;
+}
+
+#tile-holder.ui-state-active {
+    border: 0px solid black;
+}
+
+/* added class for tiles when they're dropped back on the rack */
+.tile-on-rack {
+    width: 65px;
+    height: 65px;
+    margin: 27px 5px 0px 5px;
+}
+
+/* when blank tile menu comes up */
 .tile-menu {
     width: 35px;
     height: 35px;
@@ -81,6 +183,7 @@ h1 {
     box-shadow: 0px 0px 5px blue;
 }
 
+/* letters on the draggable tiles */
 .tile-image {
     width: 65px;
     height: 65px;
@@ -98,54 +201,7 @@ h1 {
     cursor: pointer;
 }
 
-.droppable {
-    padding: 5px;
-    margin: 2px;
-    border: 1px solid black;
-    text-align: center;
-    background-color: green;
-    position: relative;
-}
-
-#tile-holder.ui-state-active {
-    border: 0px solid black;
-}
-
-.boardSlot.ui-state-active {
-    box-shadow: 0px 0px 5px rgb(52, 167, 17);
-    background: none;
-}
-
-.tile-on-rack {
-    width: 65px;
-    height: 65px;
-    margin: 27px 5px 0px 5px;
-}
-
-#tile-holder {
-    width: 660px;
-    height: 185px;
-    margin-left: auto;
-    margin-right: auto;
-    background-image: url('../graphics_data/scrabble-tile-holder-406774_640.png');
-    background-repeat: no-repeat;
-}
-
-.boardSlot {
-    border: 2.5px solid black;
-
-    width: 72px;
-    height: 72px;
-
-    vertical-align: middle;
-    margin: auto;
-    display: inline-block;
-}
-
-#tile-holder img {
-    margin: auto;
-}
-
+/* droppable for exchanging letter tiles */
 #tradeLetter {
     border: 2.5px solid black;
     border-radius: 4px;
@@ -158,43 +214,4 @@ h1 {
 
 #tradeLetter:hover {
     box-shadow: 0px 0px 5px red;
-}
-
-#wordDiv {
-    border: 2.5px solid black;
-    border-radius: 1px;
-    padding-bottom: 2.5px;
-    border-bottom: 0px;
-    width: 30%;
-    margin: auto;
-    text-align: center;
-
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    font-size: xx-large;
-    background-color: whitesmoke;
-
-    display: block;
-    min-width: 30%;
-}
-
-#wrapper {
-    background-color: bisque;
-    min-width: 1080px;
-    max-width: 1600px;
-    padding: 35px;
-    padding-bottom: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0px 2px 16px grey;
-}
-
-.ui-dialog-content {
-    font-size: 14px;
-}
-
-.ui-widget-header {
-    position: absolute;
-    border: 2px solid black !important;
-    background: white !important; 
 }
