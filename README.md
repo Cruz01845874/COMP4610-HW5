@@ -103,6 +103,7 @@ EXTRA CREDIT
       Note: this puts it back in the bag so the user can possibly reclaim it again.
 
 KNOWN BUGS
+
     * Blank tile
     
       As of right now, you cannot choose a different letter for a blank tile after taking it back to the rack. 
